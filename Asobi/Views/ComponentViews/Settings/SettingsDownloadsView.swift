@@ -62,12 +62,10 @@ struct SettingsDownloadsView: View {
                     showDownloadResetAlert.toggle()
                 }
                 .foregroundColor(.red)
-                .alert(isPresented: $showDownloadResetAlert) {
-                    Alert(
-                        title: Text("Success"),
-                        message: Text("The downloads directory has been reset to Asobi's documents folder"),
-                        dismissButton: .default(Text("OK"))
-                    )
+                .alert("Success", isPresented: $showDownloadResetAlert) {
+                    Button("OK", role: .cancel) {}
+                } message: {
+                    Text("The downloads directory has been reset to Asobi's documents folder")
                 }
             }
         }

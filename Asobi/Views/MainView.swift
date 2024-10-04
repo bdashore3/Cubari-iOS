@@ -66,17 +66,15 @@ struct MainView: View {
                     AuthOverlayView()
                 }
             }
-            .alert(isPresented: $showIntroAlert) {
-                Alert(
-                    title: Text("Welcome"),
-                    message: Text(
-                        "Click the Guides button if you need a guide to get started. \n\n" +
-                            "These guides can be accessed later in Asobi's settings."
-                    ),
-                    primaryButton: .default(Text("Guides")) {
-                        UIApplication.shared.open(URL(string: "https://github.com/bdashore3/Asobi/wiki")!)
-                    },
-                    secondaryButton: .cancel()
+            .alert("Welcome", isPresented: $showIntroAlert) {
+                Button("Guides") {
+                    UIApplication.shared.open(URL(string: "https://github.com/bdashore3/Asobi/wiki")!)
+                }
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text(
+                    "Click the Guides button if you need a guide to get started. \n\n" +
+                        "These guides can be accessed later in Asobi's settings."
                 )
             }
             .environmentObject(downloadManager)

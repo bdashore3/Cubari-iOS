@@ -103,27 +103,29 @@ struct SettingsBehaviorView: View {
             .onChange(of: forceFullScreen) { _ in
                 showForceFullScreenAlert.toggle()
             }
-            .alert(isPresented: $showForceFullScreenAlert) {
-                Alert(
-                    title: Text(forceFullScreen ? "Fullscreen enabled" : "Fullscreen disabled"),
-                    message: Text("Changing this setting requires an app restart"),
-                    dismissButton: .cancel(Text("OK"))
-                )
+            .alert(
+                Text(forceFullScreen ? "Fullscreen enabled" : "Fullscreen disabled"),
+                isPresented: $showForceFullScreenAlert
+            ) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text("Changing this setting requires an app restart")
             }
 
             Toggle(isOn: $allowZoom) {
                 Text("Allow zooming")
             }
-            .onChange(of: allowZoom) { changed in
+            .onChange(of: allowZoom) { _ in
                 webModel.webView.reload()
                 showZoomAlert.toggle()
             }
-            .alert(isPresented: $showZoomAlert) {
-                Alert(
-                    title: Text(allowZoom ? "Zooming enabled" : "Zooming disabled"),
-                    message: Text("The page will refresh when you exit settings"),
-                    dismissButton: .cancel(Text("OK"))
-                )
+            .alert(
+                Text(allowZoom ? "Zooming enabled" : "Zooming disabled"),
+                isPresented: $showZoomAlert
+            ) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text("The page will refresh when you exit settings")
             }
 
             Toggle(isOn: $clearCacheAtStart) {

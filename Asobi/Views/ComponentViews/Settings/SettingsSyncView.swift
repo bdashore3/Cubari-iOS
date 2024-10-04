@@ -23,12 +23,13 @@ struct SettingsSyncView: View {
             .onChange(of: iCloudEnabled) { _ in
                 showiCloudAlert.toggle()
             }
-            .alert(isPresented: $showiCloudAlert) {
-                Alert(
-                    title: Text(iCloudEnabled ? "Syncing enabled" : "Syncing disabled"),
-                    message: Text("Changing this setting requires an app restart"),
-                    dismissButton: .cancel(Text("OK"))
-                )
+            .alert(
+                Text(iCloudEnabled ? "Syncing enabled" : "Syncing disabled"),
+                isPresented: $showiCloudAlert
+            ) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text("Changing this setting requires an app restart")
             }
         }
     }

@@ -60,12 +60,10 @@ struct SettingsWebsiteView: View {
             .disableAutocorrection(true)
             .keyboardType(.URL)
             .autocapitalization(.none)
-            .alert(isPresented: $showUrlChangeAlert) {
-                Alert(
-                    title: Text("The default URL was changed"),
-                    message: Text("Your page should have refreshed to the new URL"),
-                    dismissButton: .cancel(Text("OK!"))
-                )
+            .alert("The default URL was changed", isPresented: $showUrlChangeAlert) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text("Your page should have refreshed to the new URL")
             }
             .disabledAppearance(loadLastHistory)
 
@@ -86,14 +84,12 @@ struct SettingsWebsiteView: View {
                     showUrlBarAlert.toggle()
                 }
             }
-            .alert(isPresented: $showUrlBarAlert) {
-                Alert(
-                    title: Text("Browser mode enabled"),
-                    message: Text("The navigation bar should have a link icon now. \n\n" +
-                        "The homepage button is located in the library context menu. \n\n" +
-                        "If this interferes with PWAs, please disable the setting."),
-                    dismissButton: .default(Text("OK"))
-                )
+            .alert("Browser mode enabled", isPresented: $showUrlBarAlert) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text("The navigation bar should have a link icon now. \n\n" +
+                    "The homepage button is located in the library context menu. \n\n" +
+                    "If this interferes with PWAs, please disable the setting.")
             }
 
             if browserModeEnabled {

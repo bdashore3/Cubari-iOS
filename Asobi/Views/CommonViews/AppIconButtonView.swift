@@ -47,15 +47,13 @@ struct AppIconButtonView: View {
             .foregroundColor(selectedIconKey == imageKey ? navigationAccent : (colorScheme == .light ? .black : .white))
             .font(
                 .caption2
-                .weight(selectedIconKey == imageKey ? .bold : .regular)
+                    .weight(selectedIconKey == imageKey ? .bold : .regular)
             )
         }
-        .alert(isPresented: $showErrorAlert) {
-            Alert(
-                title: Text("Error!"),
-                message: Text("App icon error: \(errorAlertText)"),
-                dismissButton: .cancel(Text("OK"))
-            )
+        .alert("Error!", isPresented: $showErrorAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("App icon error: \(errorAlertText)")
         }
     }
 }

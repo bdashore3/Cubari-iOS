@@ -9,18 +9,6 @@ import Alamofire
 import SwiftUI
 
 struct LibraryActionsView: View {
-    enum LibraryActionAlertType: Identifiable {
-        var id: Int {
-            hashValue
-        }
-
-        case repairHistory
-        case cache
-        case cookies
-        case success
-        case error
-    }
-
     @EnvironmentObject var webModel: WebViewModel
     @EnvironmentObject var navModel: NavigationViewModel
     @EnvironmentObject var downloadManager: DownloadManager
@@ -29,9 +17,16 @@ struct LibraryActionsView: View {
 
     @Binding var currentUrl: String
     @State private var isCopiedButton = false
-    @State private var currentAlert: LibraryActionAlertType?
     @State private var alertText = ""
     @State private var showLibraryActionProgress = false
+
+    // MARK: Alerts
+
+    @State private var showRepairHistoryAlert: Bool = false
+    @State private var showCacheAlert: Bool = false
+    @State private var showCookiesAlert: Bool = false
+    @State private var showSuccessAlert: Bool = false
+    @State private var showErrorAlert: Bool = false
 
     var body: some View {
         Form {
@@ -92,89 +87,79 @@ struct LibraryActionsView: View {
                                 try await downloadManager.downloadFavicon()
 
                                 alertText = "Image saved in the \(UIDevice.current.deviceType == .mac ? "downloads" : "favicons") folder"
-                                currentAlert = .success
+                                showSuccessAlert.toggle()
                             } catch {
                                 alertText = "Cannot get the apple touch icon URL for the website"
-                                currentAlert = .error
+                                showErrorAlert.toggle()
                             }
                         }
                     }
 
                     Button("Repair history") {
-                        currentAlert = .repairHistory
+                        showRepairHistoryAlert.toggle()
                     }
 
                     Button("Clear all cookies") {
-                        currentAlert = .cookies
+                        showCookiesAlert.toggle()
                     }
                     .accentColor(.red)
 
                     Button("Clear browser cache") {
-                        currentAlert = .cache
+                        showCacheAlert.toggle()
                     }
                     .accentColor(.red)
                 }
-                .alert(item: $currentAlert) { alert in
-                    switch alert {
-                    case .repairHistory:
-                        return Alert(
-                            title: Text("Are you sure?"),
-                            message: Text("This will attempt to re-link any leftover (zombie) history entries. Do you want to proceed?"),
-                            primaryButton: .default(Text("Yes")) {
-                                showLibraryActionProgress = true
-                                let repairedCount = webModel.repairZombieHistory()
-                                showLibraryActionProgress = false
+                .alert("Are you sure?", isPresented: $showRepairHistoryAlert) {
+                    Button("Yes") {
+                        showLibraryActionProgress = true
+                        let repairedCount = webModel.repairZombieHistory()
+                        showLibraryActionProgress = false
 
-                                alertText = "A total of \(repairedCount) history entries have been re-associated. \n\nIf you still have problems, consider clearing browsing data."
-                                currentAlert = .success
-                            },
-                            secondaryButton: .cancel()
-                        )
-                    case .cache:
-                        return Alert(
-                            title: Text("Are you sure?"),
-                            message: Text("Clearing browser cache is an irreversible action!"),
-                            primaryButton: .destructive(Text("Yes")) {
-                                Task {
-                                    await webModel.clearCache()
-
-                                    alertText = "Browser cache has been cleared"
-                                    currentAlert = .success
-                                }
-                            },
-                            secondaryButton: .cancel()
-                        )
-                    case .cookies:
-                        return Alert(
-                            title: Text("Are you sure?"),
-                            message: Text("Clearing cookies is an irreversible action!"),
-                            primaryButton: .destructive(Text("Yes")) {
-                                Task {
-                                    await webModel.clearCookies()
-
-                                    alertText = "Cookies have been cleared"
-                                    currentAlert = .success
-                                }
-                            },
-                            secondaryButton: .cancel()
-                        )
-                    case .success:
-                        return Alert(
-                            title: Text("Success!"),
-                            message: Text(alertText.isEmpty ? "No description given" : alertText),
-                            dismissButton: .default(Text("OK")) {
-                                alertText = ""
-                            }
-                        )
-                    case .error:
-                        return Alert(
-                            title: Text("Error!"),
-                            message: Text(alertText.isEmpty ? "No description given" : alertText),
-                            dismissButton: .default(Text("OK")) {
-                                alertText = ""
-                            }
-                        )
+                        alertText = "A total of \(repairedCount) history entries have been re-associated. \n\nIf you still have problems, consider clearing browsing data."
                     }
+                    Button("Cancel", role: .cancel) {}
+                } message: {
+                    Text("This will attempt to re-link any leftover (zombie) history entries. Do you want to proceed?")
+                }
+                .alert("Are you sure?", isPresented: $showCacheAlert) {
+                    Button("Yes", role: .destructive) {
+                        Task {
+                            await webModel.clearCache()
+
+                            alertText = "Browser cache has been cleared"
+                            showSuccessAlert.toggle()
+                        }
+                    }
+                    Button("Cancel", role: .cancel) {}
+                } message: {
+                    Text("Clearing browser cache is an irreversible action!")
+                }
+                .alert("Are you sure?", isPresented: $showCookiesAlert) {
+                    Button("Yes", role: .destructive) {
+                        Task {
+                            await webModel.clearCookies()
+
+                            alertText = "Cookies have been cleared"
+                            showSuccessAlert.toggle()
+                        }
+                    }
+                    Button("Cancel", role: .cancel) {}
+                } message: {
+                    Text("Clearing cookies is an irreversible action!")
+                }
+                .alert("Success!", isPresented: $showSuccessAlert) {
+                    Button("OK") {
+                        alertText = ""
+                    }
+                } message: {
+                    Text(alertText.isEmpty ? "No description given" : alertText)
+                }
+                .alert("Error!", isPresented: $showErrorAlert) {
+                    Button("OK") {
+                        alertText = ""
+                    }
+                } message: {
+                    Text(alertText.isEmpty ? "No description given" : alertText)
                 }
 
                 HistoryActionView(labelText: "Clear browsing data")

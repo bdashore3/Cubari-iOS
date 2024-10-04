@@ -53,12 +53,13 @@ struct SettingsPrivacyView: View {
 
                 showAdblockAlert.toggle()
             }
-            .alert(isPresented: $showAdblockAlert) {
-                Alert(
-                    title: Text(blockAds ? "Adblock enabled" : "Adblock disabled"),
-                    message: Text("The page will refresh when you exit settings"),
-                    dismissButton: .cancel(Text("OK"))
-                )
+            .alert(
+                Text(blockAds ? "Adblock enabled" : "Adblock disabled"),
+                isPresented: $showAdblockAlert
+            ) {
+                Button("OK", role: .cancel) {}
+            } message: {
+                Text("The page will refresh when you exit settings")
             }
 
             Toggle(isOn: $blockPopups) {

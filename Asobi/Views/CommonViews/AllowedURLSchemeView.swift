@@ -87,12 +87,10 @@ struct AllowedURLSchemeView: View {
                 }
             }
         }
-        .alert(isPresented: $showErrorAlert) {
-            Alert(
-                title: Text("Error"),
-                message: Text(errorMessage),
-                dismissButton: .cancel(Text("OK"))
-            )
+        .alert("Error", isPresented: $showErrorAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(errorMessage)
         }
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {

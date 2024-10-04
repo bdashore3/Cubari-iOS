@@ -45,37 +45,31 @@ struct ContentView: View {
 
             // WebView
             WebView()
-                .alert(item: $downloadManager.downloadTypeAlert) { alert in
-                    switch alert {
-                    case .http:
-                        return Alert(
-                            title: Text("Download this file?"),
-                            message: Text("Would you like to start this download?"),
-                            primaryButton: .default(Text("Start")) {
-                                if let downloadUrl = downloadManager.downloadUrl {
-                                    Task {
-                                        await downloadManager.httpDownloadFrom(url: downloadUrl)
-                                    }
-                                } else {
-                                    webModel.toastDescription = "The download URL is invalid"
-                                }
-                            },
-                            secondaryButton: .cancel {
-                                downloadManager.downloadUrl = nil
+                .alert("Download this file?", isPresented: $downloadManager.showHttpAlert) {
+                    Button("Start") {
+                        if let downloadUrl = downloadManager.downloadUrl {
+                            Task {
+                                await downloadManager.httpDownloadFrom(url: downloadUrl)
                             }
-                        )
-                    case .blob:
-                        return Alert(
-                            title: Text("Keep this file?"),
-                            message: Text("Would you like keep this downloaded file?"),
-                            primaryButton: .default(Text("Keep")) {
-                                downloadManager.completeBlobDownload()
-                            },
-                            secondaryButton: .destructive(Text("Delete")) {
-                                downloadManager.deleteBlobDownload()
-                            }
-                        )
+                        } else {
+                            webModel.toastDescription = "The download URL is invalid"
+                        }
                     }
+                    Button("Cancel", role: .cancel) {
+                        downloadManager.downloadUrl = nil
+                    }
+                } message: {
+                    Text("Would you like to start this download?")
+                }
+                .alert("Keep this file?", isPresented: $downloadManager.showBlobAlert) {
+                    Button("Keep") {
+                        downloadManager.completeBlobDownload()
+                    }
+                    Button("Delete", role: .destructive) {
+                        downloadManager.deleteBlobDownload()
+                    }
+                } message: {
+                    Text("Would you like keep this downloaded file?")
                 }
                 .edgesIgnoringSafeArea(statusBarPinType == .hide ? (showBottomInset ? .top : .vertical) : (showBottomInset ? [] : .bottom))
                 .zIndex(1)

@@ -16,7 +16,7 @@ struct EmptyInstructionView: View {
             Text(title)
                 .font(
                     .system(size: 25)
-                    .weight(.semibold)
+                        .weight(.semibold)
                 )
 
             Text(message)

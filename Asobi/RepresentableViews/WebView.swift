@@ -73,14 +73,14 @@ struct WebView: UIViewRepresentable {
             let allowZoom = UserDefaults.standard.bool(forKey: "allowZoom")
 
             scrollView.pinchGestureRecognizer?.isEnabled = allowZoom
-            if UIDevice.current.deviceType != .mac && allowZoom {
+            if UIDevice.current.deviceType != .mac, allowZoom {
                 parent.webModel.userDidZoom = true
             }
         }
 
         // Handle orientation changes here
         func scrollViewDidZoom(_ scrollView: UIScrollView) {
-            if UIDevice.current.deviceType != .mac && UserDefaults.standard.bool(forKey: "allowZoom") {
+            if UIDevice.current.deviceType != .mac, UserDefaults.standard.bool(forKey: "allowZoom") {
                 // If the user initiated the zoom, we don't care
                 if parent.webModel.userDidZoom {
                     return
@@ -99,7 +99,7 @@ struct WebView: UIViewRepresentable {
         // Check if the user is zoomed in, used for resetting the zoom level on orientation change
         // Also set the previous zoom level for possible orientation change issues
         func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
-            if UIDevice.current.deviceType != .mac && UserDefaults.standard.bool(forKey: "allowZoom") {
+            if UIDevice.current.deviceType != .mac, UserDefaults.standard.bool(forKey: "allowZoom") {
                 parent.webModel.userDidZoom = false
 
                 parent.webModel.previousZoomScale = scale
@@ -137,7 +137,7 @@ struct WebView: UIViewRepresentable {
                 decisionHandler(.allow)
             } else {
                 parent.downloadManager.downloadUrl = navigationResponse.response.url
-                parent.downloadManager.downloadTypeAlert = .http
+                parent.downloadManager.showHttpAlert.toggle()
                 decisionHandler(.cancel)
             }
         }

@@ -45,12 +45,10 @@ struct EditBookmarkView: View {
                 }
             }
         }
-        .alert(isPresented: $showUrlError) {
-            Alert(
-                title: Text("Empty fields"),
-                message: Text("The bookmark title and URL cannot be empty. Please input the valid fields"),
-                dismissButton: .default(Text("OK"))
-            )
+        .alert("Empty fields", isPresented: $showUrlError) {
+            Button("OK") {}
+        } message: {
+            Text("The bookmark title and URL cannot be empty. Please input the valid fields")
         }
         .navigationBarTitle("Editing Bookmark", displayMode: .inline)
         .toolbar {

@@ -17,15 +17,6 @@ struct BlobComponents: Codable {
     let dataString: String
 }
 
-enum DownloadType: Identifiable {
-    var id: Int {
-        hashValue
-    }
-
-    case http
-    case blob
-}
-
 @MainActor
 class DownloadManager: ObservableObject {
     var webModel: WebViewModel?
@@ -36,7 +27,8 @@ class DownloadManager: ObservableObject {
 
     // Download handling variables
     @Published var downloadUrl: URL? = nil
-    @Published var downloadTypeAlert: DownloadType?
+    @Published var showHttpAlert: Bool = false
+    @Published var showBlobAlert: Bool = false
     @Published var currentDownload: DownloadTask<URL>? = nil
     @Published var downloadProgress: Double = 0.0
     @Published var showDownloadProgress: Bool = false
@@ -157,7 +149,7 @@ class DownloadManager: ObservableObject {
             try data.write(to: url)
             downloadUrl = url
 
-            downloadTypeAlert = .blob
+            showBlobAlert.toggle()
         } catch {
             webModel?.toastDescription = error.localizedDescription
             return
