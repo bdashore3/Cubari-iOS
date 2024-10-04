@@ -6,7 +6,6 @@
 //
 
 import CoreData
-import Introspect
 import SwiftUI
 
 struct EditBookmarkView: View {

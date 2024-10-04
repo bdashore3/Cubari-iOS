@@ -5,8 +5,8 @@
 //  Created by Brian Dashore on 8/2/21.
 //
 
-import Introspect
 import SwiftUI
+import SwiftUIIntrospect
 
 @main
 struct AsobiApp: App {
@@ -25,7 +25,7 @@ struct AsobiApp: App {
     var body: some Scene {
         WindowGroup {
             MainView()
-                .introspectViewController { viewController in
+                .introspect(.viewController, on: .iOS(.v15, .v16, .v17, .v18)) { viewController in
                     let window = viewController.view.window
                     guard let rootViewController = window?.rootViewController else { return }
                     self.rootViewController.rootViewController = rootViewController

@@ -14,7 +14,6 @@
 		0C099D6627FF2958008E87B5 /* SettingsPickerViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C099D6527FF2958008E87B5 /* SettingsPickerViews.swift */; };
 		0C099D7227FFBE7D008E87B5 /* AsobiRootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C099D7127FFBE7D008E87B5 /* AsobiRootViewController.swift */; };
 		0C0B87A527A6FDF300FCB6A3 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0B87A427A6FDF300FCB6A3 /* MainView.swift */; };
-		0C0C6B7B277A35F6007B9345 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 0C0C6B7A277A35F6007B9345 /* Introspect */; };
 		0C0C6B80277A3708007B9345 /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0C6B7F277A3708007B9345 /* View.swift */; };
 		0C11E6BD284EE9AB0031DCE5 /* NavView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C11E6BC284EE9AB0031DCE5 /* NavView.swift */; };
 		0C19F731297C5F61003F0672 /* PaddedTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C19F730297C5F61003F0672 /* PaddedTextFieldStyle.swift */; };
@@ -33,6 +32,7 @@
 		0C30B3E3282F2F1D00D59AA1 /* History+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C30B3E2282F2F1D00D59AA1 /* History+CoreDataProperties.swift */; };
 		0C30B3E5282F2F2D00D59AA1 /* HistoryEntry+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C30B3E4282F2F2D00D59AA1 /* HistoryEntry+CoreDataClass.swift */; };
 		0C30B3E7282F2F3700D59AA1 /* HistoryEntry+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C30B3E6282F2F3700D59AA1 /* HistoryEntry+CoreDataProperties.swift */; };
+		0C33D9A02CB06D1700DE300C /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 0C33D99F2CB06D1700DE300C /* SwiftUIIntrospect */; };
 		0C3DBB442ABE1F6D00B2DC14 /* UIApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3DBB432ABE1F6D00B2DC14 /* UIApplication.swift */; };
 		0C447E96274C6C2100DF0186 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 0C447E95274C6C2100DF0186 /* Alamofire */; };
 		0C46D904285B950800F36692 /* UrlBarButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C46D903285B950800F36692 /* UrlBarButtonView.swift */; };
@@ -218,8 +218,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C33D9A02CB06D1700DE300C /* SwiftUIIntrospect in Frameworks */,
 				0C30B3D6282F1EA700D59AA1 /* CloudKit.framework in Frameworks */,
-				0C0C6B7B277A35F6007B9345 /* Introspect in Frameworks */,
 				0C447E96274C6C2100DF0186 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -535,7 +535,7 @@
 			name = Asobi;
 			packageProductDependencies = (
 				0C447E95274C6C2100DF0186 /* Alamofire */,
-				0C0C6B7A277A35F6007B9345 /* Introspect */,
+				0C33D99F2CB06D1700DE300C /* SwiftUIIntrospect */,
 			);
 			productName = Cubari;
 			productReference = 7C2248C026B85D0F00AD3D42 /* Asobi.app */;
@@ -611,7 +611,7 @@
 			mainGroup = 7C2248B726B85D0F00AD3D42;
 			packageReferences = (
 				0C447E94274C6C2100DF0186 /* XCRemoteSwiftPackageReference "Alamofire" */,
-				0C0C6B79277A35F6007B9345 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
+				0C33D99E2CB06D1700DE300C /* XCRemoteSwiftPackageReference "swiftui-introspect" */,
 			);
 			productRefGroup = 7C2248C126B85D0F00AD3D42 /* Products */;
 			projectDirPath = "";
@@ -1078,12 +1078,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		0C0C6B79277A35F6007B9345 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
+		0C33D99E2CB06D1700DE300C /* XCRemoteSwiftPackageReference "swiftui-introspect" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect";
+			repositoryURL = "https://github.com/siteline/swiftui-introspect";
 			requirement = {
-				branch = master;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
 			};
 		};
 		0C447E94274C6C2100DF0186 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
@@ -1097,10 +1097,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		0C0C6B7A277A35F6007B9345 /* Introspect */ = {
+		0C33D99F2CB06D1700DE300C /* SwiftUIIntrospect */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 0C0C6B79277A35F6007B9345 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
-			productName = Introspect;
+			package = 0C33D99E2CB06D1700DE300C /* XCRemoteSwiftPackageReference "swiftui-introspect" */;
+			productName = SwiftUIIntrospect;
 		};
 		0C447E95274C6C2100DF0186 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
